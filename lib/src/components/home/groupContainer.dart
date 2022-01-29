@@ -1,41 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/detail_group/detailGroup.dart';
 import 'groupCard.dart';
 
-class GroupContainer extends StatelessWidget {
-  final List<String> entries = <String>[
-    'fakhrads',
-    'you\'re mine',
-    'hilman',
-    'hilman',
-    'hilman',
-    'hilman',
-    'hilman',
-    'hilman',
-    'hilman'
-  ];
-  final List<String> totals = <String>[
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-    '@fakhrads',
-  ];
-  final List<String> content = <String>[
-    'Saya hari ini sedang patah hati sedang patah hati sedang patah hati sedang patah hati sedang patah hati sedang patah hati',
-    'Saya suka sekali bermain bola',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian',
-    'Selamat malam kesepian'
-  ];
+class GroupContainer extends StatefulWidget {
+  const GroupContainer({Key? key}) : super(key: key);
 
+  @override
+  _GroupContainerState createState() => _GroupContainerState();
+}
+
+class _GroupContainerState extends State<GroupContainer> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -90,7 +64,10 @@ class GroupContainer extends StatelessWidget {
                       elevation: 5,
                       child: ListTile(
                         onTap: () {
-                          debugPrint("Tes");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetaiLGroup(id: 1)));
                         },
                         title: Text('Two-line ListTile'),
                         subtitle: Text('Here is a $index'),

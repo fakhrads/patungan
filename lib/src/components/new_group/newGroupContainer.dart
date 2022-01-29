@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/home/Home.dart';
 
 class newGroupContainer extends StatefulWidget {
   const newGroupContainer({Key? key}) : super(key: key);
@@ -17,9 +18,12 @@ class _newGroupContainerState extends State<newGroupContainer> {
   }
 
   void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
+    if (_counter == 1) {
+    } else {
+      setState(() {
+        _counter--;
+      });
+    }
   }
 
   @override
@@ -29,6 +33,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
             padding: EdgeInsets.all(10),
             child: Container(
                 width: double.infinity,
+                height: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(25))),
@@ -86,7 +91,10 @@ class _newGroupContainerState extends State<newGroupContainer> {
                           'Simpan',
                           style: TextStyle(color: Colors.blue),
                         ),
-                        onPressed: () => _decrementCounter(),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Home()));
+                        },
                       ),
                     ],
                   ),
