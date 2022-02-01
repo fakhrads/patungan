@@ -12,8 +12,10 @@ class DetaiLGroup extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F6),
         body: Column(
-          children: [HeaderDetail(), BodyDetail()],
-        ));
+          children: [HeaderDetail(), BodyDetail(),],
+        ),
+        
+        );
   }
 }
 
@@ -45,8 +47,8 @@ class BodyDetail extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Container(
-          width: double.infinity,
-          height: double.infinity,
+          width: 317,
+          height: 600,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(25))),
@@ -57,6 +59,9 @@ class BodyDetail extends StatelessWidget {
               children: [
                 Carddetail(),
                 Padding(padding: EdgeInsets.only(bottom: 10)),
+                Text("List Split Bills"),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                ListSplitBills(),
               ],
             ),
           ),
@@ -91,19 +96,90 @@ class _CarddetailState extends State<Carddetail> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: 2, left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Group name :",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                          ),
+                          Text(
+                            'Lorem',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit_outlined,
+                            ),
+                            onPressed: () {
+                              //statements
+                              print('IconButton is pressed');
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListSplitBills extends StatefulWidget {
+  const ListSplitBills({Key? key}) : super(key: key);
+
+  @override
+  _ListSplitBillsState createState() => _ListSplitBillsState();
+}
+
+class _ListSplitBillsState extends State<ListSplitBills> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Card(
+        color: Color(0xFF2255DC),
+        child: InkWell(
+          onTap: () {
+            print('Tapped');
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 15, top: 10),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 2, left: 5, bottom: 15),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Group name :", 
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
+                            '00/00/0000',
+                            style: TextStyle(color: Colors.white),
+                          ), 
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete_outline,
                             ),
+                            onPressed: () {
+                              //statements
+                              print('IconButton is pressed');
+                            },
                           ),
-                          
-
                         ],
                       ),
                     )
