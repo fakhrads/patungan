@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/views/home/Home.dart';
+import '../../db/sql_helper.dart';
 
 class newGroupContainer extends StatefulWidget {
   const newGroupContainer({Key? key}) : super(key: key);
@@ -25,6 +26,43 @@ class _newGroupContainerState extends State<newGroupContainer> {
       });
     }
   }
+
+  //bikinan oji
+  List<Map<String, dynamic>> _journals = [];
+
+  bool _isLoading = true;
+
+  // This function is used to fetch all data from the database
+  void _refreshJournals() async {
+    final data = await SQLHelper.getItems();
+    setState(() {
+      _journals = data;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshJournals(); // Loading the diary when the app starts
+  }
+
+  final TextEditingController _namaGrupController = TextEditingController();
+  final TextEditingController _catatanController = TextEditingController();
+  final TextEditingController _namaPesertaController = TextEditingController();
+
+  void _showForm(int? idGrup) async {
+    if (idGrup != null) {
+      // id == null -> create new item
+      // id != null -> update an existing item
+      final existingJournal =
+          _journals.firstWhere((element) => element['idGrup'] == idGrup);
+      _namaGrupController.text = existingJournal['nama_grup'];
+      _catatanController.text = existingJournal['catatan'];
+      _namaPesertaController.text = existingJournal['nama_peserta'];
+    }
+  }
+  //end oji
 
   @override
   Widget build(BuildContext context) {
