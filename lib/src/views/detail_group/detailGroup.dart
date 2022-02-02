@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:patungan/src/components/detail_group/detailGroup.dart';
+import 'package:patungan/src/components/detail_group/detailGroup.dart';
 
 class DetaiLGroup extends StatelessWidget {
   final int id;
@@ -10,12 +11,19 @@ class DetaiLGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFF6F6F6),
-        body: Column(
-          children: [HeaderDetail(), BodyDetail(),],
-        ),
-        
-        );
+      backgroundColor: Color(0xFFF6F6F6),
+      body: Column(
+        children: [
+          HeaderDetail(),
+          BodyDetail(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF2255DC),
+      ),
+    );
   }
 }
 
@@ -118,10 +126,9 @@ class _CarddetailState extends State<Carddetail> {
                           IconButton(
                             icon: Icon(
                               Icons.edit_outlined,
+                              color: Colors.white,
                             ),
                             onPressed: () {
-                              //statements
-                              print('IconButton is pressed');
                             },
                           ),
                         ],
@@ -170,19 +177,19 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                           Text(
                             '00/00/0000',
                             style: TextStyle(color: Colors.white),
-                          ), 
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete_outline,
-                            ),
-                            onPressed: () {
-                              //statements
-                              print('IconButton is pressed');
-                            },
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    IconButton(
+                      alignment: Alignment.centerRight,
+                      icon: Icon(
+                        Icons.delete_forever_outlined,
+                      ),
+                      onPressed: () {
+                        print('test');
+                      },
+                    ),
                   ],
                 ),
               )
