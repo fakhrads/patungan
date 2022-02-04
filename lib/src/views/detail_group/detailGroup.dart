@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/components/detail_group/detailGroup.dart';
 import 'package:patungan/src/components/detail_group/listSplitBills.dart';
+import 'package:patungan/src/views/new_splitbills/newSplitBills.dart';
 
 class DetaiLGroup extends StatelessWidget {
   final int id;
@@ -12,7 +13,11 @@ class DetaiLGroup extends StatelessWidget {
         backgroundColor: Color(0xFFF6F6F6),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            debugPrint("Tes");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewSplitBills(),
+                ));
           },
         ),
         body: Column(

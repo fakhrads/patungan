@@ -10,13 +10,15 @@ class SQLHelper {
         nama_grup TEXT,
         tgl_dibuat TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         catatan TEXT
-      )
+      );
+
       CREATE TABLE peserta (
         id_peserta INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         id_grup INTEGER,
         nama_peserta TEXT,
         FOREIGN KEY(id_grup) REFERENCES grup_transaksi (id_grup)
-      )
+      );
+
       CREATE TABLE split_bills (
         id_split_bills INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         id_grup INTEGER,
@@ -29,7 +31,7 @@ class SQLHelper {
         total_harga REAL,
         FOREIGN KEY(id_grup) REFERENCES grup_transaksi (id_grup),
         FOREIGN KEY(id_peserta) REFERENCES peserta (id_peserta)
-      )
+      );
       """);
   }
 
