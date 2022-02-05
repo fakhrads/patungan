@@ -8,15 +8,15 @@ class ListSplitBills extends StatefulWidget {
 }
 
 class _ListSplitBillsState extends State<ListSplitBills> {
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
+  final List<String> entries = <String>['A', 'B', 'C',];
+  final List<int> colorCodes = <int>[600, 500, 100,];
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
         padding: EdgeInsets.all(12),
         child: Container(
-            width: 317,
+            width: double.infinity,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(25))),
@@ -29,17 +29,38 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                       const Divider(
                         color: Colors.transparent,
                       ),
+                      
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: 50,
+                      padding: const EdgeInsets.only(left: 10),
+                      height: 68,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Colors.amber[colorCodes[index]],
+                        color: Colors.indigo,
                       ),
-                      child: Center(child: Text('Entry ${entries[index]}')),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "00/00/0000",
+                            style: TextStyle(
+                              color: Colors.white
+                              ),
+                          ),
+                          IconButton( 
+                            onPressed: (){},
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          )
+                        ],
+                      )
                     );
                   }),
-            )),
+            )
+            
+            ),
       ),
     );
   }

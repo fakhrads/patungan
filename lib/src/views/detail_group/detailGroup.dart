@@ -19,8 +19,13 @@ class DetaiLGroup extends StatelessWidget {
                   builder: (context) => NewSplitBills(),
                 ));
           },
+          child: 
+          Icon(Icons.add),
+          backgroundColor: Colors.indigo,
         ),
-        body: Column(
+        body: Container(
+          width: double.infinity,
+        child : Column(
           children: [
             HeaderDetail(),
             DetailGroupContainer(),
@@ -28,7 +33,7 @@ class DetaiLGroup extends StatelessWidget {
               child: ListSplitBills(),
             )
           ],
-        ));
+        )));
   }
 }
 
@@ -41,7 +46,7 @@ class HeaderDetail extends StatelessWidget {
           children: [
             BackButton(),
             Padding(
-                padding: EdgeInsets.only(left: 55),
+                padding: EdgeInsets.only(left: 30),
                 child: Text(
                   "Detail Group",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

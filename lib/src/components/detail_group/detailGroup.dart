@@ -13,14 +13,14 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(15),
         child: Container(
-          width: 317,
+          width: double.infinity,
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.indigo,
               borderRadius: BorderRadius.all(Radius.circular(25))),
           child: Padding(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.only(left: 15, top: 15,bottom: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -30,7 +30,10 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                       Text(
                         'Tim_Nganjuk',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 20, 
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            ),
                       ),
                       TextButton(
                           onPressed: () {
@@ -41,33 +44,27 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                           },
                           child: Icon(
                             Icons.edit,
-                            color: Colors.blue,
-                            size: 22.0,
+                            color: Colors.white,
                           )),
                     ]),
                 Padding(padding: EdgeInsets.only(bottom: 10)),
                 Text(
-                  'Participan',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  'Member :',
+                  style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white
+                  ),
                 ),
                 Padding(padding: EdgeInsets.only(bottom: 5)),
                 Text(
-                  'name : ',
+                  'Rei',
                   style: TextStyle(
                     fontSize: 16,
+                    color: Colors.white
                   ),
                 ),
-                Text(
-                  'Item : ',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  'Subprice : ',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Divider(
-                  color: Colors.grey,
-                )
+                Padding(padding: EdgeInsets.only(bottom: 10))
               ],
             ),
           ),
