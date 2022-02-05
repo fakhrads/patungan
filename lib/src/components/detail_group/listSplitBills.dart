@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/print_splitbills/printdetail.dart';
 
 class ListSplitBills extends StatefulWidget {
   ListSplitBills({Key? key}) : super(key: key);
@@ -8,8 +9,16 @@ class ListSplitBills extends StatefulWidget {
 }
 
 class _ListSplitBillsState extends State<ListSplitBills> {
-  final List<String> entries = <String>['A', 'B', 'C',];
-  final List<int> colorCodes = <int>[600, 500, 100,];
+  final List<String> entries = <String>[
+    'A',
+    'B',
+    'C',
+  ];
+  final List<int> colorCodes = <int>[
+    600,
+    500,
+    100,
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,38 +38,39 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                       const Divider(
                         color: Colors.transparent,
                       ),
-                      
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: const EdgeInsets.only(left: 10),
-                      height: 68,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                    return Card(
                         color: Colors.indigo,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "00/00/0000",
-                            style: TextStyle(
-                              color: Colors.white
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PrintDetail(),
+                                ));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "00/00/0000",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
                           ),
-                          IconButton( 
-                            onPressed: (){},
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                          )
-                        ],
-                      )
-                    );
+                        ));
                   }),
-            )
-            
-            ),
+            )),
       ),
     );
   }
