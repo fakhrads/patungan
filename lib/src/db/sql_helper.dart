@@ -10,14 +10,9 @@ class SQLHelper {
         nama_grup TEXT,
         tgl_dibuat TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         catatan TEXT
-<<<<<<< HEAD
       )
       """);
     await database.execute("""
-=======
-      );
-
->>>>>>> 81220651f93b6e1373fd85877c4807754260a9c3
       CREATE TABLE peserta (
         id_peserta INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         id_grup INTEGER,

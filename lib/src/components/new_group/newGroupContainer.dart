@@ -34,7 +34,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
 
   // This function is used to fetch all data from the database
   void _refreshJournals() async {
-    final data = await SQLHelper.getItems();
+    final data = await SQLHelper.getGrup();
     setState(() {
       _journals = data;
       _isLoading = false;
@@ -49,7 +49,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
 
   final TextEditingController _namaGrupController = TextEditingController();
   final TextEditingController _catatanController = TextEditingController();
-  final TextEditingController _namaPesertaController = TextEditingController();
+  // final TextEditingController _namaPesertaController = TextEditingController();
 
   void _showForm(int? idGrup) async {
     if (idGrup != null) {
@@ -59,13 +59,15 @@ class _newGroupContainerState extends State<newGroupContainer> {
           _journals.firstWhere((element) => element['idGrup'] == idGrup);
       _namaGrupController.text = existingJournal['nama_grup'];
       _catatanController.text = existingJournal['catatan'];
-      _namaPesertaController.text = existingJournal['nama_peserta'];
+      // _namaPesertaController.text = existingJournal['nama_peserta'];
     }
   }
   //end oji
 
   @override
   Widget build(BuildContext context) {
+    // final buffer = _showForm();
+
     return Center(
         child: Padding(
             padding: EdgeInsets.all(10),
@@ -82,6 +84,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
                     children: [
                       Text('Nama Group'),
                       TextField(
+                        controller: _namaGrupController,
                         decoration: InputDecoration(
                           hintText: 'Masukkan Nama Group',
                         ),
@@ -91,6 +94,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
                       ),
                       Text('Deskripsi Group'),
                       TextField(
+                        controller: _catatanController,
                         cursorHeight: 20,
                         decoration: InputDecoration(
                           hintText: 'Masukkan deskripsi',
@@ -129,7 +133,20 @@ class _newGroupContainerState extends State<newGroupContainer> {
                           'Simpan',
                           style: TextStyle(color: Colors.blue),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          //save new journal
+                          // if (idGrup == null) {
+                          //   await _addGrup();
+                          // }
+
+                          // if (idGrup != null) {
+                          //   await _updateGrup(idGrup);
+                          // }
+
+                          // // Clear the text fields
+                          // _namaGrupController.text = '';
+                          // _catatanController.text = '';
+
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Home()));
                         },
@@ -137,5 +154,11 @@ class _newGroupContainerState extends State<newGroupContainer> {
                     ],
                   ),
                 ))));
+  }
+
+  Future<void> _addGrup() async {
+    await SQLHelper.createGroup(
+        _namaGrupController.text, _catatanController.text);
+    _refreshJournals();
   }
 }
