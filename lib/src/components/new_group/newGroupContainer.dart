@@ -10,6 +10,24 @@ class newGroupContainer extends StatefulWidget {
 }
 
 class _newGroupContainerState extends State<newGroupContainer> {
+  Future<int> _createGroup(String nama_grup, String? catatan) async {
+    int data;
+    SQLHelper sql = new SQLHelper();
+    return await SQLHelper.createGroup(nama_grup, catatan);
+  }
+
+  void _showForm(int? idGrup) async {
+    if (idGrup != null) {
+      // id == null -> create new item
+      // id != null -> update an existing item
+      final existingJournal =
+          _journals.firstWhere((element) => element['idGrup'] == idGrup);
+      _namaGrupController.text = existingJournal['nama_grup'];
+      _catatanController.text = existingJournal['catatan'];
+      // _namaPesertaController.text = existingJournal['nama_peserta'];
+    }
+  }
+
   int _counter = 1;
 
   void _incrementCounter() {
@@ -50,18 +68,6 @@ class _newGroupContainerState extends State<newGroupContainer> {
   final TextEditingController _namaGrupController = TextEditingController();
   final TextEditingController _catatanController = TextEditingController();
   // final TextEditingController _namaPesertaController = TextEditingController();
-
-  void _showForm(int? idGrup) async {
-    if (idGrup != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
-      final existingJournal =
-          _journals.firstWhere((element) => element['idGrup'] == idGrup);
-      _namaGrupController.text = existingJournal['nama_grup'];
-      _catatanController.text = existingJournal['catatan'];
-      // _namaPesertaController.text = existingJournal['nama_peserta'];
-    }
-  }
   //end oji
 
   @override
@@ -134,6 +140,8 @@ class _newGroupContainerState extends State<newGroupContainer> {
                           style: TextStyle(color: Colors.blue),
                         ),
                         onPressed: () async {
+                          _createGroup(_namaGrupController.text,
+                              _catatanController.text);
                           //save new journal
                           // if (idGrup == null) {
                           //   await _addGrup();
@@ -154,11 +162,5 @@ class _newGroupContainerState extends State<newGroupContainer> {
                     ],
                   ),
                 ))));
-  }
-
-  Future<void> _addGrup() async {
-    await SQLHelper.createGroup(
-        _namaGrupController.text, _catatanController.text);
-    _refreshJournals();
   }
 }

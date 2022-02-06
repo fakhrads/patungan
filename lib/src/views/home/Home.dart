@@ -17,7 +17,12 @@ class Home extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
         backgroundColor: Color(0xFF00052D),
-        body:
-            Padding(padding: EdgeInsets.only(top: 0), child: GroupContainer()));
+        body: RefreshIndicator(
+            onRefresh: () async {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => Home()));
+            },
+            child: Padding(
+                padding: EdgeInsets.only(top: 0), child: GroupContainer())));
   }
 }
