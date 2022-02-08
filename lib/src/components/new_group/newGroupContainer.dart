@@ -45,7 +45,6 @@ class _newGroupContainerState extends State<newGroupContainer> {
     }
   }
 
-  //bikinan oji
   List<Map<String, dynamic>> _journals = [];
 
   bool _isLoading = true;
@@ -68,11 +67,21 @@ class _newGroupContainerState extends State<newGroupContainer> {
   final TextEditingController _namaGrupController = TextEditingController();
   final TextEditingController _catatanController = TextEditingController();
   // final TextEditingController _namaPesertaController = TextEditingController();
-  //end oji
 
   @override
   Widget build(BuildContext context) {
     // final buffer = _showForm();
+
+    int? id_grup;
+
+    if (id_grup != null) {
+      // id == null -> create new item
+      // id != null -> update an existing item
+      final existingJournal =
+          _journals.firstWhere((element) => element['id_grup'] == id_grup);
+      _namaGrupController.text = existingJournal['nama_grup'];
+      _catatanController.text = existingJournal['catatan'];
+    }
 
     return Center(
         child: Padding(
@@ -140,20 +149,23 @@ class _newGroupContainerState extends State<newGroupContainer> {
                           style: TextStyle(color: Colors.blue),
                         ),
                         onPressed: () async {
-                          _createGroup(_namaGrupController.text,
-                              _catatanController.text);
-                          //save new journal
-                          // if (idGrup == null) {
-                          //   await _addGrup();
-                          // }
+                          // _createGroup(
+                          //   _namaGrupController.text,
+                          //   _catatanController.text,
+                          // );
 
-                          // if (idGrup != null) {
-                          //   await _updateGrup(idGrup);
-                          // }
+                          // Save new journal
+                          if (id_grup == null) {
+                            await _addGroup();
+                          }
 
-                          // // Clear the text fields
-                          // _namaGrupController.text = '';
-                          // _catatanController.text = '';
+                          if (id_grup != null) {
+                            await _updateGroup(id_grup);
+                          }
+
+                          // Clear the text fields
+                          _namaGrupController.text = '';
+                          _catatanController.text = '';
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Home()));
@@ -162,5 +174,28 @@ class _newGroupContainerState extends State<newGroupContainer> {
                     ],
                   ),
                 ))));
+  }
+
+  // Insert a new journal to the database
+  Future<void> _addGroup() async {
+    await SQLHelper.createGroup(
+        _namaGrupController.text, _catatanController.text);
+    _refreshJournals();
+  }
+
+  // Update an existing journal
+  Future<void> _updateGroup(int id_grup) async {
+    await SQLHelper.updateGrup(
+        id_grup, _namaGrupController.text, _catatanController.text);
+    _refreshJournals();
+  }
+
+  // Delete an item
+  void _deleteItem(int id_grup) async {
+    await SQLHelper.deleteGrup(id_grup);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Successfully deleted a journal!'),
+    ));
+    _refreshJournals();
   }
 }
