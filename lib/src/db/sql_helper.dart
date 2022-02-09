@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'dart:convert';
@@ -48,16 +50,16 @@ class SQLHelper {
     );
   }
 
+//tabel grup transaksi----------------------------------------------------
   //create
-  //static Future<List<int>> createGroup(String nama_grup, String? catatan, String nama_peserta) (JAN DIHAPUS)
-  static Future<int> createGroup(String nama_grup, String? catatan) async {
+  static Future<int> createGroup(
+    String nama_grup,
+    String? catatan,
+  ) async {
     final db = await SQLHelper.db();
     final dataGrup = {'nama_grup': nama_grup, 'catatan': catatan};
-    // final dataPeserta = {'nama_peserta': nama_peserta};
     final idGrup = await db.insert('grup_transaksi', dataGrup,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    // final idPeserta = await db.insert('peserta', dataPeserta,
-    //     conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return idGrup;
   }
 
@@ -65,19 +67,10 @@ class SQLHelper {
   static Future<List<Map<String, dynamic>>> getGrup() async {
     final db = await SQLHelper.db();
     final idGrup = db.query('grup_transaksi', orderBy: "id_grup");
-    // final idPeserta = db.query('peserta', orderBy: "id_peserta");
     return idGrup;
   }
 
-  // //read single item by id
-  // static Future<List<Map<String, dynamic>>> getItem(int id) async {
-  //   final db = await SQLHelper.db();
-  //   return db.query('items', where: "id = ?", whereArgs: [id], limit: 1); //bikin json
-  // }
-
   //update
-  //Future<int> updateGrup(int id_grup, int id_peserta, String nama_grup,
-  //    String? catatan, String nama_peserta)
   static Future<int> updateGrup(
       int id_grup, String nama_grup, String? catatan) async {
     final db = await SQLHelper.db();
@@ -105,4 +98,131 @@ class SQLHelper {
       debugPrint("Something went wrong when deleting an item: $err");
     }
   }
+
+//tabel peserta----------------------------------------------------
+  //create
+  static Future<int> createGroupPeserta(
+    int id_grup,
+    String nama_peserta,
+  ) async {
+    final db = await SQLHelper.db();
+    final dataGrupPs = {'id_grup': id_grup, 'nama_peserta': nama_peserta};
+    // final dataPeserta = {'nama_peserta': nama_peserta};
+    final idGrupPs = await db.insert('peserta', dataGrupPs,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    return idGrupPs;
+  }
+
+  //read all (journal)
+  static Future<List<Map<String, dynamic>>> getGrupPeserta() async {
+    final db = await SQLHelper.db();
+    final idGrupPs = db.query('id_grup', orderBy: "id_grup");
+    return idGrupPs;
+  }
+
+  //update
+  static Future<int> updateGrupPeserta(
+      int id_peserta, int id_grup, String nama_peserta) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      // dihapus karena tidak akan mengubah grup nya juga
+      // 'id_grup': id_grup,
+      'nama_peserta': nama_peserta,
+    };
+
+    final result = await db.update('peserta', data,
+        where: "id_peserta = ?", whereArgs: [id_peserta]);
+
+    return result;
+  }
+
+  //delete
+  static Future<void> deleteGrupPeserta(int id_peserta) async {
+    final db = await SQLHelper.db();
+    try {
+      await db
+          .delete("peserta", where: "id_peserta = ?", whereArgs: [id_peserta]);
+    } catch (err) {
+      debugPrint("Something went wrong when deleting an item: $err");
+    }
+  }
+
+//tabel split bills----------------------------------------------------
+  // //create
+  // static Future<int> createSplitBills(
+  //   int id_grup,
+  //   int id_peserta,
+  //   String item,
+  //   Double harga_item,
+  //   Double sub_total,
+  //   Double pajak,
+  //   Double diskon,
+  //   Double total_harga,
+  // ) async {
+  //   final db = await SQLHelper.db();
+  //   final dataSB = {
+  //     'id_grup': id_grup,
+  //     'id_peserta': id_peserta,
+  //     'item': item,
+  //     'harga_item': harga_item,
+  //     'sub_total': sub_total,
+  //     'pajak': pajak,
+  //     'diskon': diskon,
+  //     'total_harga': total_harga,
+  //   };
+  //   // final dataPeserta = {'nama_peserta': nama_peserta};
+  //   final idSB = await db.insert('split_bills', dataSB,
+  //       conflictAlgorithm: sql.ConflictAlgorithm.replace);
+  //   return idSB;
+  // }
+
+  // //read all (journal)
+  // static Future<List<Map<String, dynamic>>> getSplitBills() async {
+  //   final db = await SQLHelper.db();
+  //   final idSB = db.query('id_split_bills', orderBy: "id_split_bills");
+  //   return idSB;
+  // }
+
+  // //update
+  // static Future<int> updateSplitBills(
+  //   int id_split_bills,
+  //   int id_grup,
+  //   int id_peserta,
+  //   String item,
+  //   Double harga_item,
+  //   Double sub_total,
+  //   Double pajak,
+  //   Double diskon,
+  //   Double total_harga,
+  // ) async {
+  //   final db = await SQLHelper.db();
+
+  //   final data = {
+  //     // 'id_grup': id_grup,
+  //     // 'id_peserta': id_peserta,
+  //     'item': item,
+  //     'harga_item': harga_item,
+  //     'sub_total': sub_total,
+  //     'pajak': pajak,
+  //     'diskon': diskon,
+  //     'total_harga': total_harga,
+  //   };
+
+  //   final result = await db.update('split_bills', data,
+  //       where: "id_split_bills = ?", whereArgs: [id_split_bills]);
+
+  //   return result;
+  // }
+
+  // //delete
+  // static Future<void> deleteSplitBills(int id_split_bills) async {
+  //   final db = await SQLHelper.db();
+  //   try {
+  //     await db.delete("split_bills",
+  //         where: "id_split_bills = ?", whereArgs: [id_split_bills]);
+  //   } catch (err) {
+  //     debugPrint("Something went wrong when deleting an item: $err");
+  //   }
+  // }
 }
