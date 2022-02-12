@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/views/home/Home.dart';
+import 'package:patungan/src/test/testG.dart';
 import '../../db/sql_helper.dart';
+// import 'package:patungan/src/test/db/sqlHelper.dart';
 
 class newGroupContainer extends StatefulWidget {
   const newGroupContainer({Key? key}) : super(key: key);
@@ -16,15 +18,15 @@ class _newGroupContainerState extends State<newGroupContainer> {
     return await SQLHelper.createGroup(nama_grup, catatan);
   }
 
-  void _showForm(int? idGrup) async {
-    if (idGrup != null) {
+  void _showForm(int? id_grup) async {
+    if (id_grup != null) {
       // id == null -> create new item
       // id != null -> update an existing item
       final existingJournal =
-          _journals.firstWhere((element) => element['idGrup'] == idGrup);
+          _journals.firstWhere((element) => element['id_grup'] == id_grup);
       _namaGrupController.text = existingJournal['nama_grup'];
       _catatanController.text = existingJournal['catatan'];
-      // _namaPesertaController.text = existingJournal['nama_peserta'];
+      _namaPesertaController.text = existingJournal['nama_peserta'];
     }
   }
 
@@ -66,7 +68,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
 
   final TextEditingController _namaGrupController = TextEditingController();
   final TextEditingController _catatanController = TextEditingController();
-  // final TextEditingController _namaPesertaController = TextEditingController();
+  final TextEditingController _namaPesertaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +83,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
           _journals.firstWhere((element) => element['id_grup'] == id_grup);
       _namaGrupController.text = existingJournal['nama_grup'];
       _catatanController.text = existingJournal['catatan'];
+      _namaPesertaController.text = existingJournal['nama_peserta'];
     }
 
     return Center(
@@ -137,6 +140,7 @@ class _newGroupContainerState extends State<newGroupContainer> {
                               itemCount: _counter,
                               itemBuilder: (BuildContext ctxt, int index) {
                                 return new TextField(
+                                  controller: _namaPesertaController,
                                   cursorHeight: 20,
                                   decoration: InputDecoration(
                                     hintText: 'Masukkan deskripsi',
@@ -166,9 +170,12 @@ class _newGroupContainerState extends State<newGroupContainer> {
                           // Clear the text fields
                           _namaGrupController.text = '';
                           _catatanController.text = '';
+                          _namaPesertaController.text = '';
 
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Home()));
+                              MaterialPageRoute(builder: (context) {
+                            return TestG();
+                          }));
                         },
                       ),
                     ],
@@ -176,10 +183,13 @@ class _newGroupContainerState extends State<newGroupContainer> {
                 ))));
   }
 
+  // grup
   // Insert a new journal to the database
   Future<void> _addGroup() async {
     await SQLHelper.createGroup(
-        _namaGrupController.text, _catatanController.text);
+      _namaGrupController.text,
+      _catatanController.text,
+    );
     _refreshJournals();
   }
 
@@ -191,11 +201,21 @@ class _newGroupContainerState extends State<newGroupContainer> {
   }
 
   // Delete an item
-  void _deleteItem(int id_grup) async {
+  void _deleteGroup(int id_grup) async {
     await SQLHelper.deleteGrup(id_grup);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Successfully deleted a journal!'),
     ));
     _refreshJournals();
   }
+
+  // // peserta
+  // // Insert a new journal to the database
+  // Future<void> _addGroup() async {
+  //   await SQLHelper.createGroup(
+  //     _namaGrupController.text,
+  //     _catatanController.text,
+  //   );
+  //   _refreshJournals();
+  // }
 }
