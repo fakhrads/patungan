@@ -74,29 +74,39 @@ class _GroupContainerState extends State<GroupContainer> {
                           color: Colors.transparent,
                         ),
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          height: 68,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Colors.indigo,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "00/00/0000",
-                                style: TextStyle(color: Colors.white),
+                      return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        DetaiLGroup(id: 1))));
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              height: 68,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Colors.indigo,
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                              )
-                            ],
-                          ));
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "00/00/0000",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  )
+                                ],
+                              )));
                     }),
               ]));
         },
