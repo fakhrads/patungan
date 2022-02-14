@@ -12,7 +12,7 @@ class editGroup extends StatelessWidget {
             child: Container(  
               width: double.infinity,  
               decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
+                    color: Color(0xFFFFFFFF),
                     borderRadius: BorderRadius.all(Radius.circular(25))),
               child: Padding(
                 padding: EdgeInsets.all(15),
@@ -26,7 +26,7 @@ class editGroup extends StatelessWidget {
                       ),
                     ),
                     Divider(
-                        color: Colors.white,
+                        color: Color(0xFFFFFFFF),
                       ),
                     Text('Deskripsi Group'),
                       TextField(

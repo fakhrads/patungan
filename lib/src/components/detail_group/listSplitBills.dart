@@ -31,6 +31,8 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                 borderRadius: BorderRadius.all(Radius.circular(25))),
             child: Padding(
               padding: EdgeInsets.all(12),
+              child: Container(
+                height: double.infinity,
               child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: entries.length,
@@ -69,7 +71,8 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                             ],
                           ),
                         ));
-                  }),
+                  })
+              ),
             )),
       ),
     );
