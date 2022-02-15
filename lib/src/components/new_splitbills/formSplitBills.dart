@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/match_splitbills/match_splitbills.dart';
 
 class FormSplitBills extends StatefulWidget {
   const FormSplitBills({Key? key}) : super(key: key);
@@ -144,7 +145,13 @@ class _FormSplitBillsState extends State<FormSplitBills> {
                   ),
                   SizedBox(width: 15),
                   FlatButton(
-                  onPressed: () {}, 
+                  onPressed: () {  
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => matchSplitBills(),
+                    ));
+                  }, 
                   child: Text("Next", style: TextStyle(
                     color: Colors.white
                   ),),
