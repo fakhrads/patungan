@@ -74,7 +74,21 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                      showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Center(child: Text("Delete Split Bills")),
+                                            content: Text(
+                                                "Are you sure want to delete this split bills?"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {}, child: Text("No")),
+                                              TextButton(
+                                                  onPressed: () {}, child: Text("Yes")),
+                                            ],
+                                          ));
+                                      },
                                       icon: Icon(
                                         Icons.delete,
                                         color: Colors.red,

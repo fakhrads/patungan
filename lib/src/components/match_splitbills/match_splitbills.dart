@@ -101,7 +101,35 @@ class _sesuaikanSplitBillsState extends State<sesuaikanSplitBills> {
                           ],
                         ),
                         TextButton(
-                            onPressed: () {}, 
+                            onPressed: () {
+                          showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Center(child: Text("Choose Participant")),
+                                content: Container(
+                                  height: 100,
+                                  child: Column(
+                                    children: [
+                                      ElevatedButton(
+                                          onPressed: () {}, 
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.account_circle),
+                                              SizedBox(width: 10,),
+                                              Text("Rei Ayanami"),
+                                            ],
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {}, child: Text("No")),
+                                  TextButton(
+                                      onPressed: () {}, child: Text("Yes")),
+                                ],
+                              ));
+                            }, 
                             child: Icon(
                               Icons.add_circle_sharp,
                               color: Color(0xFF2255DC),
