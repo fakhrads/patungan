@@ -1,31 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/views/home/Home.dart';
-import '../../db/sql_helper.dart';
+import 'package:patungan/src/test/testG.dart';
+// import '../../db/sql_helper.dart';
+import 'package:patungan/src/test/db/sqlHelper.dart';
+import 'package:patungan/src/test/widget/group_form_widget.dart';
+import 'package:patungan/src/test/model/grupTransaksi.dart';
 
 class newGroupContainer extends StatefulWidget {
-  const newGroupContainer({Key? key}) : super(key: key);
+  final GrupTransaksi? grupTransaksi;
+
+  const newGroupContainer({
+    Key? key,
+    this.grupTransaksi,
+  }) : super(key: key);
 
   @override
   _newGroupContainerState createState() => _newGroupContainerState();
 }
 
 class _newGroupContainerState extends State<newGroupContainer> {
-  Future<int> _createGroup(String nama_grup, String? catatan) async {
-    int data;
-    SQLHelper sql = new SQLHelper();
-    return await SQLHelper.createGroup(nama_grup, catatan);
-  }
+  final _formKey = GlobalKey<FormState>();
+  late String nama_grup;
+  late String catatan;
 
-  void _showForm(int? idGrup) async {
-    if (idGrup != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
-      final existingJournal =
-          _journals.firstWhere((element) => element['idGrup'] == idGrup);
-      _namaGrupController.text = existingJournal['nama_grup'];
-      _catatanController.text = existingJournal['catatan'];
-      // _namaPesertaController.text = existingJournal['nama_peserta'];
-    }
+  // Future<int> _createGroup(String nama_grup, String? catatan) async {
+  //   int data;
+  //   SQLHelper sql = new SQLHelper();
+  //   return await SQLHelper.createGroup(nama_grup, catatan);
+  // }
+
+  // void _showForm(int? id_grup) async {
+  //   if (id_grup != null) {
+  //     // id == null -> create new item
+  //     // id != null -> update an existing item
+  //     final existingJournal =
+  //         _journals.firstWhere((element) => element['id_grup'] == id_grup);
+  //     _namaGrupController.text = existingJournal['nama_grup'];
+  //     _catatanController.text = existingJournal['catatan'];
+  //     _namaPesertaController.text = existingJournal['nama_peserta'];
+  //   }
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+
+    nama_grup = widget.grupTransaksi?.nama_grup ?? '';
+    catatan = widget.grupTransaksi?.catatan ?? '';
   }
 
   int _counter = 1;
@@ -45,157 +66,141 @@ class _newGroupContainerState extends State<newGroupContainer> {
     }
   }
 
-  List<Map<String, dynamic>> _journals = [];
+  // List<Map<String, dynamic>> _journals = [];
 
-  bool _isLoading = true;
+  // bool _isLoading = true;
 
-  // This function is used to fetch all data from the database
-  void _refreshJournals() async {
-    final data = await SQLHelper.getGrup();
-    setState(() {
-      _journals = data;
-      _isLoading = false;
-    });
-  }
+  // // This function is used to fetch all data from the database
+  // void _refreshJournals() async {
+  //   final data = await SQLHelper.getGrup();
+  //   setState(() {
+  //     _journals = data;
+  //     _isLoading = false;
+  //   });
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    _refreshJournals(); // Loading the diary when the app starts
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _refreshJournals(); // Loading the diary when the app starts
+  // }
 
-  final TextEditingController _namaGrupController = TextEditingController();
-  final TextEditingController _catatanController = TextEditingController();
+  // final TextEditingController _namaGrupController = TextEditingController();
+  // final TextEditingController _catatanController = TextEditingController();
   // final TextEditingController _namaPesertaController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    // final buffer = _showForm();
+  Widget build(BuildContext context) =>
+      // // final buffer = _showForm();
 
-    int? id_grup;
+      // int? id_grup;
 
-    if (id_grup != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
-      final existingJournal =
-          _journals.firstWhere((element) => element['id_grup'] == id_grup);
-      _namaGrupController.text = existingJournal['nama_grup'];
-      _catatanController.text = existingJournal['catatan'];
+      // if (id_grup != null) {
+      //   // id == null -> create new item
+      //   // id != null -> update an existing item
+      //   final existingJournal =
+      //       _journals.firstWhere((element) => element['id_grup'] == id_grup);
+      //   _namaGrupController.text = existingJournal['nama_grup'];
+      //   _catatanController.text = existingJournal['catatan'];
+      //   _namaPesertaController.text = existingJournal['nama_peserta'];
+      // }
+
+      Scaffold(
+        body: Form(
+          key: _formKey,
+          child: GroupFormWidget(
+            nama_grup: nama_grup,
+            catatan: catatan,
+            onChangedNamaGrup: (nama_grup) =>
+                setState(() => this.nama_grup = nama_grup),
+            onChangedCatatan: (catatan) =>
+                setState(() => this.catatan = catatan),
+          ),
+        ),
+        floatingActionButton: buildButton(),
+      );
+
+  Widget buildButton() {
+    final isFormValid = nama_grup.isNotEmpty && catatan.isNotEmpty;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: ElevatedButton(
+        onPressed: addOrUpdateGroup,
+        child: Text('Save'),
+      ),
+    );
+  }
+
+  void addOrUpdateGroup() async {
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      final isUpdating = widget.grupTransaksi != null;
+
+      if (isUpdating) {
+        await updateGroup();
+      } else {
+        await addGroup();
+      }
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => TestG()));
     }
-
-    return Center(
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-                child: Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Nama Group'),
-                      TextField(
-                        controller: _namaGrupController,
-                        decoration: InputDecoration(
-                          hintText: 'Masukkan Nama Group',
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.white,
-                      ),
-                      Text('Deskripsi Group'),
-                      TextField(
-                        controller: _catatanController,
-                        cursorHeight: 20,
-                        decoration: InputDecoration(
-                          hintText: 'Masukkan deskripsi',
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.white,
-                      ),
-                      Row(children: [
-                        Text('Member'),
-                        TextButton(
-                          child: Text('Add Column'),
-                          onPressed: () => _incrementCounter(),
-                        ),
-                        TextButton(
-                          child: Text(
-                            'Delete Column',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          onPressed: () => _decrementCounter(),
-                        ),
-                      ]),
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: _counter,
-                              itemBuilder: (BuildContext ctxt, int index) {
-                                return new TextField(
-                                  cursorHeight: 20,
-                                  decoration: InputDecoration(
-                                    hintText: 'Masukkan deskripsi',
-                                  ),
-                                );
-                              })),
-                      TextButton(
-                        child: Text(
-                          'Simpan',
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        onPressed: () async {
-                          // _createGroup(
-                          //   _namaGrupController.text,
-                          //   _catatanController.text,
-                          // );
-
-                          // Save new journal
-                          if (id_grup == null) {
-                            await _addGroup();
-                          }
-
-                          if (id_grup != null) {
-                            await _updateGroup(id_grup);
-                          }
-
-                          // Clear the text fields
-                          _namaGrupController.text = '';
-                          _catatanController.text = '';
-
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Home()));
-                        },
-                      ),
-                    ],
-                  ),
-                ))));
   }
 
-  // Insert a new journal to the database
-  Future<void> _addGroup() async {
-    await SQLHelper.createGroup(
-        _namaGrupController.text, _catatanController.text);
-    _refreshJournals();
+  Future updateGroup() async {
+    final grupTransaksi = widget.grupTransaksi!.copy(
+      nama_grup: nama_grup,
+      catatan: catatan,
+    );
+
+    await SQLHelper.instance.update(grupTransaksi);
   }
 
-  // Update an existing journal
-  Future<void> _updateGroup(int id_grup) async {
-    await SQLHelper.updateGrup(
-        id_grup, _namaGrupController.text, _catatanController.text);
-    _refreshJournals();
+  Future addGroup() async {
+    final grupTransaksi = GrupTransaksi(
+      nama_grup: nama_grup,
+      catatan: catatan,
+      createdTime: DateTime.now(),
+    );
+
+    await SQLHelper.instance.create(grupTransaksi);
   }
 
-  // Delete an item
-  void _deleteItem(int id_grup) async {
-    await SQLHelper.deleteGrup(id_grup);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a journal!'),
-    ));
-    _refreshJournals();
-  }
+  // // grup
+  // // Insert a new journal to the database
+  // Future<void> _addGroup() async {
+  //   await SQLHelper.createGroup(
+  //     _namaGrupController.text,
+  //     _catatanController.text,
+  //   );
+  //   _refreshJournals();
+  // }
+
+  // // Update an existing journal
+  // Future<void> _updateGroup(int id_grup) async {
+  //   await SQLHelper.updateGrup(
+  //       id_grup, _namaGrupController.text, _catatanController.text);
+  //   _refreshJournals();
+  // }
+
+  // // Delete an item
+  // void _deleteGroup(int id_grup) async {
+  //   await SQLHelper.deleteGrup(id_grup);
+  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //     content: Text('Successfully deleted a journal!'),
+  //   ));
+  //   _refreshJournals();
+  // }
+
+  // // peserta
+  // // Insert a new journal to the database
+  // Future<void> _addGroup() async {
+  //   await SQLHelper.createGroup(
+  //     _namaGrupController.text,
+  //     _catatanController.text,
+  //   );
+  //   _refreshJournals();
+  // }
 }
