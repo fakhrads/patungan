@@ -6,11 +6,12 @@ class bodyprint extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Colors.grey.shade200
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10))
           ),
           child: Padding(
             padding: EdgeInsets.all(10),

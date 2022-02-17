@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/detail_group/detailGroup.dart';
 
 class FeedCard extends StatefulWidget {
   final String userName;
@@ -18,7 +19,10 @@ class _FeedCardState extends State<FeedCard> {
             color: Color(0xFF2255DC),
             child: new InkWell(
               onTap: () {
-                print("tapped");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetaiLGroup(id: 1)));
               },
               child: Column(
                 children: [

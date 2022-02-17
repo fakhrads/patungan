@@ -7,7 +7,7 @@ class PrintDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F6F6),
+      backgroundColor: Color(0xFFD0D4D7),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
