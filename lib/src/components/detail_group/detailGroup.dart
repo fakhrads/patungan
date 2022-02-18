@@ -74,7 +74,9 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => EditDetailGroup()));
+                                    builder: (context) => EditDetailGroup(
+                                          id_grup: widget.id,
+                                        )));
                           },
                           child: Icon(
                             Icons.edit,
