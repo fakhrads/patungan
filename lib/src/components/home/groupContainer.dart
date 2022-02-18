@@ -144,13 +144,18 @@ class _GroupContainerState extends State<GroupContainer> {
                     itemBuilder: (BuildContext context, int index) {
                       final grupTransaksi = gTransaksi[index];
                       final idgrup = grupTransaksi.id_grup;
+                      final namagrup = grupTransaksi.nama_grup;
+                      final deskripsigrup = grupTransaksi.catatan;
                       return InkWell(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) =>
-                                        DetailGroup(id: idgrup))));
+                                    builder: ((context) => DetailGroup(
+                                          id: idgrup,
+                                          nama_grup: namagrup,
+                                          deskripsi: deskripsigrup,
+                                        ))));
                           },
                           child: Container(
                               padding: const EdgeInsets.only(left: 10),

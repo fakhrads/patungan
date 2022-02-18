@@ -43,7 +43,7 @@ class SQLHelper {
     await db.execute(''' 
     CREATE TABLE $tPeserta (
         ${PesertaTransaksiFields.id_peserta} $idType,
-        ${PesertaTransaksiFields.id_grup} $textType,
+        ${PesertaTransaksiFields.id_grup} $integerType,
         ${PesertaTransaksiFields.nama_peserta} $textType,
         ${PesertaTransaksiFields.tgl_dibuat} $textType
       );''');
@@ -60,7 +60,7 @@ class SQLHelper {
       db.insert(tPeserta, {
         "_id_grup": id_grup,
         "nama_peserta": m["value"],
-        "tgl_dibuat": "Sekarang"
+        "tgl_dibuat": "2022-02-18T13:59:26.074579"
       });
     }
 
@@ -69,7 +69,7 @@ class SQLHelper {
     return grupTransaksi.copy(id_grup: id_grup);
   }
 
-  Future<GrupTransaksi> readPesertaTransaksi(int id_grup) async {
+  Future<List<PesertaTransaksi>> readPesertaTransaksi(int? id_grup) async {
     final db = await instance.database;
 
     final maps = await db.query(
@@ -80,7 +80,7 @@ class SQLHelper {
     );
 
     if (maps.isNotEmpty) {
-      return GrupTransaksi.fromJson(maps.first);
+      return maps.map((json) => PesertaTransaksi.fromJson(json)).toList();
     } else {
       throw Exception('ID Group $id_grup not found');
     }

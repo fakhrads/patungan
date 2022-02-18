@@ -7,7 +7,10 @@ import 'package:patungan/src/test/model/grupTransaksi.dart';
 
 class DetailGroup extends StatefulWidget {
   final int? id;
-  DetailGroup({Key? key, this.id}) : super(key: key);
+  final String? nama_grup;
+  final String? deskripsi;
+  DetailGroup({Key? key, this.id, this.deskripsi, this.nama_grup})
+      : super(key: key);
 
   @override
   State<DetailGroup> createState() => _DetailGroupState();
@@ -62,8 +65,9 @@ class _DetailGroupState extends State<DetailGroup> {
               children: [
                 HeaderDetail(),
                 DetailGroupContainer(
-                  nama_grup: gTransaksi.toString(),
-                  deskripsi_grup: gTransaksi.toString(),
+                  id: widget.id?.toInt(),
+                  nama_grup: widget.nama_grup,
+                  deskripsi_grup: widget.deskripsi,
                 ),
                 Expanded(
                   child: ListSplitBills(),
