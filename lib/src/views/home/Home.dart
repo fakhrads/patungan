@@ -8,6 +8,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Patungan"),
+          backgroundColor: Color(0xFF00052D),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context,
@@ -16,7 +20,7 @@ class Home extends StatelessWidget {
           backgroundColor: Color(0xFF122E76),
           child: const Icon(Icons.add),
         ),
-        backgroundColor: Color(0xFF00052D),
+        backgroundColor: Color(0xFF023047),
         body: RefreshIndicator(
             onRefresh: () async {
               Navigator.pushReplacement(context,

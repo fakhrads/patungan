@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:patungan/src/views/print_splitbills/printdetail.dart';
+import 'package:patungan/src/views/print_splitbills/printDetail.dart';
 
 class ListSplitBills extends StatefulWidget {
   ListSplitBills({Key? key}) : super(key: key);
@@ -38,13 +38,12 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                     padding: const EdgeInsets.only(left: 20, top: 5),
                     child: Text(
                       "List Split Bills",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
-                    ),),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Container(
-                  child: Expanded(
+                      child: Expanded(
                     child: ListView.separated(
                         padding: const EdgeInsets.only(top: 10),
                         itemCount: entries.length,
@@ -64,7 +63,8 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                                       ));
                                 },
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -75,19 +75,23 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                      showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Center(child: Text("Delete Split Bills")),
-                                            content: Text(
-                                                "Are you sure want to delete this split bills?"),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {}, child: Text("No")),
-                                              TextButton(
-                                                  onPressed: () {}, child: Text("Yes")),
-                                            ],
-                                          ));
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  title: Center(
+                                                      child: Text(
+                                                          "Delete Split Bills")),
+                                                  content: Text(
+                                                      "Are you sure want to delete this split bills?"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () {},
+                                                        child: Text("No")),
+                                                    TextButton(
+                                                        onPressed: () {},
+                                                        child: Text("Yes")),
+                                                  ],
+                                                ));
                                       },
                                       icon: Icon(
                                         Icons.delete,
@@ -98,8 +102,7 @@ class _ListSplitBillsState extends State<ListSplitBills> {
                                 ),
                               ));
                         }),
-                  )
-                  ),
+                  )),
                 ],
               ),
             )),

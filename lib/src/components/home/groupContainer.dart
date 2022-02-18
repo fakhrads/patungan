@@ -102,28 +102,11 @@ class _GroupContainerState extends State<GroupContainer> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Padding(
-        padding: EdgeInsets.only(top: 60, left: 15),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("Hai, Semoga hari mu menyenangkan",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              )),
-        ]),
-      ),
       SizedBox.expand(
-          child: DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.95,
-        minChildSize: 0.7,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return Container(
+          child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                color: Colors.white,
+              ),
               child: Stack(children: [
                 Container(
                   child: Padding(
@@ -187,9 +170,7 @@ class _GroupContainerState extends State<GroupContainer> {
                                 ],
                               )));
                     }),
-              ]));
-        },
-      ))
+              ])))
     ]);
   }
 }

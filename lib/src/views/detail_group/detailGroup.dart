@@ -53,7 +53,10 @@ class _DetailGroupState extends State<DetailGroup> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewSplitBills(),
+                  builder: (context) => NewSplitBills(
+                      idgrup: widget.id,
+                      namagrup: widget.nama_grup,
+                      deskripsi: widget.deskripsi),
                 ));
           },
           child: Icon(Icons.add),

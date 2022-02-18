@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:patungan/src/components/new_splitbills/formSplitBills.dart';
 
 class NewSplitBills extends StatelessWidget {
-  const NewSplitBills({Key? key}) : super(key: key);
+  final int? idgrup;
+  final String? namagrup;
+  final String? deskripsi;
+
+  const NewSplitBills({Key? key, this.idgrup, this.namagrup, this.deskripsi})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
