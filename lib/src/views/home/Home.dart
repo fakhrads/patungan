@@ -22,7 +22,8 @@ class Home extends StatelessWidget {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => Home()));
             },
-            child: Padding(
-                padding: EdgeInsets.only(top: 0), child: GroupContainer())));
+            child: const Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: const GroupContainer())));
   }
 }

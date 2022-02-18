@@ -44,7 +44,7 @@ class GroupFormWidget extends StatelessWidget {
   Widget buildCatatan() => TextFormField(
         initialValue: catatan,
         decoration: InputDecoration(
-          hintText: 'Catatan',
+          hintText: 'Deskripsi',
         ),
         validator: (catatan) => catatan != null && catatan.isEmpty
             ? 'Description cannot be empty'

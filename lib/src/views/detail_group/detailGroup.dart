@@ -2,13 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:patungan/src/components/detail_group/detailGroup.dart';
 import 'package:patungan/src/components/detail_group/listSplitBills.dart';
 import 'package:patungan/src/views/new_splitbills/newSplitBills.dart';
+import 'package:patungan/src/test/db/sqlHelper.dart';
+import 'package:patungan/src/test/model/grupTransaksi.dart';
 
-class DetaiLGroup extends StatelessWidget {
-  final int id;
-  const DetaiLGroup({Key? key, required this.id}) : super(key: key);
+class DetailGroup extends StatefulWidget {
+  final int? id;
+  DetailGroup({Key? key, this.id}) : super(key: key);
+
+  @override
+  State<DetailGroup> createState() => _DetailGroupState();
+}
+
+class _DetailGroupState extends State<DetailGroup> {
+  var gTransaksi;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshNotes();
+    debugPrint("HEHE");
+  }
+
+  @override
+  void dispose() {
+    SQLHelper.instance.close();
+
+    super.dispose();
+  }
+
+  Future refreshNotes() async {
+    setState(() => isLoading = true);
+
+    this.gTransaksi = await SQLHelper.instance.readGrupTransaksi(widget.id);
+
+    setState(() => isLoading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final grupTransaksi = gTransaksi;
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F6),
         floatingActionButton: FloatingActionButton(
@@ -19,21 +53,23 @@ class DetaiLGroup extends StatelessWidget {
                   builder: (context) => NewSplitBills(),
                 ));
           },
-          child: 
-          Icon(Icons.add),
+          child: Icon(Icons.add),
           backgroundColor: Colors.indigo,
         ),
         body: Container(
-          width: double.infinity,
-        child : Column(
-          children: [
-            HeaderDetail(),
-            DetailGroupContainer(),
-            Expanded(
-              child: ListSplitBills(),
-            )
-          ],
-        )));
+            width: double.infinity,
+            child: Column(
+              children: [
+                HeaderDetail(),
+                DetailGroupContainer(
+                  nama_grup: gTransaksi.toString(),
+                  deskripsi_grup: gTransaksi.toString(),
+                ),
+                Expanded(
+                  child: ListSplitBills(),
+                )
+              ],
+            )));
   }
 }
 

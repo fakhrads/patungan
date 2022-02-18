@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:patungan/src/views/home/Home.dart';
 import 'src/landingPage.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: LandingPage(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
     );
   }

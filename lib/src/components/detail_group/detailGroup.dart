@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/views/edit_group/editDetailGroup.dart';
+import 'package:patungan/src/test/db/sqlHelper.dart';
+import 'package:patungan/src/test/model/grupTransaksi.dart';
 
 class DetailGroupContainer extends StatefulWidget {
-  const DetailGroupContainer({Key? key}) : super(key: key);
+  final nama_grup;
+  final deskripsi_grup;
+  const DetailGroupContainer({Key? key, this.nama_grup, this.deskripsi_grup})
+      : super(key: key);
 
   @override
   _DetailGroupContainerState createState() => _DetailGroupContainerState();
@@ -20,7 +25,7 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
               color: Colors.indigo,
               borderRadius: BorderRadius.all(Radius.circular(25))),
           child: Padding(
-            padding: EdgeInsets.only(left: 15, top: 15,bottom: 15),
+            padding: EdgeInsets.only(left: 15, top: 15, bottom: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -28,12 +33,12 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Tim_Nganjuk',
+                        widget.nama_grup,
                         style: TextStyle(
-                            fontSize: 20, 
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            ),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       TextButton(
                           onPressed: () {
@@ -51,18 +56,14 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                 Text(
                   'Member :',
                   style: TextStyle(
-                    fontSize: 18, 
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
-                  ),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 Padding(padding: EdgeInsets.only(bottom: 5)),
                 Text(
                   'Rei',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Padding(padding: EdgeInsets.only(bottom: 10))
               ],

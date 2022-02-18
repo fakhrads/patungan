@@ -1,6 +1,8 @@
 import 'package:path/path.dart';
+import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:patungan/src/test/model/grupTransaksi.dart';
+import 'dart:convert';
 
 class SQLHelper {
   static final SQLHelper instance = SQLHelper._init();
@@ -30,31 +32,62 @@ class SQLHelper {
     final integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
-CREATE TABLE $tGrup ( 
-  ${GrupTransaksiFields.id_grup} $idType,
-  ${GrupTransaksiFields.nama_grup} $textType,
-  ${GrupTransaksiFields.tgl_dibuat} $textType,
-  ${GrupTransaksiFields.catatan} $textType
-  )
-''');
+      CREATE TABLE $tGrup ( 
+        ${GrupTransaksiFields.id_grup} $idType,
+        ${GrupTransaksiFields.nama_grup} $textType,
+        ${GrupTransaksiFields.tgl_dibuat} $textType,
+        ${GrupTransaksiFields.catatan} $textType
+      )
+
+    ''');
+    await db.execute(''' 
+    CREATE TABLE $tPeserta (
+        ${PesertaTransaksiFields.id_peserta} $idType,
+        ${PesertaTransaksiFields.id_grup} $textType,
+        ${PesertaTransaksiFields.nama_peserta} $textType,
+        ${PesertaTransaksiFields.tgl_dibuat} $textType
+      );''');
   }
 
-  Future<GrupTransaksi> create(GrupTransaksi grupTransaksi) async {
+  Future<GrupTransaksi> create(
+      GrupTransaksi grupTransaksi, pesertaTransaksi) async {
     final db = await instance.database;
-
-    // final json = grupTransaksi.toJson();
-    // final columns =
-    //     '${GrupTransaksiFields.nama_grup}, ${GrupTransaksiFields.tgl_dibuat}, ${GrupTransaksiFields.catatan}';
-    // final values =
-    //     '${json[GrupTransaksiFields.nama_grup]}, ${json[GrupTransaksiFields.tgl_dibuat]}, ${json[GrupTransaksiFields.catatan]}';
-    // final id_grup = await db
-    //     .rawInsert('INSERT INTO table_name ($columns) VALUES ($values)');
-
+    print(grupTransaksi.toJson());
     final id_grup = await db.insert(tGrup, grupTransaksi.toJson());
+    print(id_grup);
+    for (Map m in pesertaTransaksi) {
+      print(m["value'"]);
+      db.insert(tPeserta, {
+        "_id_grup": id_grup,
+        "nama_peserta": m["value"],
+        "tgl_dibuat": "Sekarang"
+      });
+    }
+
+    //Batch batch = db.batch();
+    //batch.insert(tPeserta, pesertaTransaksi.toJson());
     return grupTransaksi.copy(id_grup: id_grup);
   }
 
-  Future<GrupTransaksi> readGrupTransaksi(int id_grup) async {
+  Future<GrupTransaksi> readPesertaTransaksi(int id_grup) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      tPeserta,
+      columns: PesertaTransaksiFields.values,
+      where: '${PesertaTransaksiFields.id_grup} = ?',
+      whereArgs: [id_grup],
+    );
+
+    if (maps.isNotEmpty) {
+      return GrupTransaksi.fromJson(maps.first);
+    } else {
+      throw Exception('ID Group $id_grup not found');
+    }
+  }
+
+  Future<GrupTransaksi> readGrupTransaksi(int? id_grup) async {
+    print(id_grup);
     final db = await instance.database;
 
     final maps = await db.query(
@@ -65,7 +98,8 @@ CREATE TABLE $tGrup (
     );
 
     if (maps.isNotEmpty) {
-      return GrupTransaksi.fromJson(maps.first);
+      print(maps);
+      return GrupTransaksi.fromJson(maps[0]);
     } else {
       throw Exception('ID Group $id_grup not found');
     }
@@ -106,6 +140,7 @@ CREATE TABLE $tGrup (
 
   Future close() async {
     final db = await instance.database;
+    _database = null;
 
     db.close();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/views/detail_group/detailGroup.dart';
+import 'package:patungan/src/views/home/Home.dart';
 import 'groupCard.dart';
 import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
@@ -45,23 +46,66 @@ class _GroupContainerState extends State<GroupContainer> {
 
   final dateFormatter = DateFormat('MMMM dd h:mm a');
 
-  final List<String> entries = <String>[
-    'A',
-    'B',
-  ];
-  final List<int> colorCodes = <int>[
-    600,
-    500,
-    100,
-    100,
-  ];
+  Future deleteGroup(grupId) async {
+    await SQLHelper.instance.delete(grupId);
+  }
+
+  showAlertDialog(BuildContext context, id) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE1E1E1))),
+      child: Text(
+        "No",
+        style: TextStyle(color: Color(0xFF000000)),
+      ),
+      onPressed: () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => Home()));
+      },
+    );
+    Widget continueButton = TextButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2255DC))),
+      child: Text(
+        "Yes",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        deleteGroup(id);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => Home()));
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25.0))),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      actionsPadding: EdgeInsets.only(left: 12, right: 12),
+      title: Text("Delete Group"),
+      content: Text("Are you sure you want to delete group?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Padding(
         padding: EdgeInsets.only(top: 60, left: 15),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("Hai, Fakhri",
+          Text("Hai, Semoga hari mu menyenangkan",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -99,13 +143,14 @@ class _GroupContainerState extends State<GroupContainer> {
                         ),
                     itemBuilder: (BuildContext context, int index) {
                       final grupTransaksi = gTransaksi[index];
+                      final idgrup = grupTransaksi.id_grup;
                       return InkWell(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: ((context) =>
-                                        DetaiLGroup(id: 1))));
+                                        DetailGroup(id: idgrup))));
                           },
                           child: Container(
                               padding: const EdgeInsets.only(left: 10),
@@ -125,7 +170,10 @@ class _GroupContainerState extends State<GroupContainer> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showAlertDialog(
+                                          context, grupTransaksi.id_grup);
+                                    },
                                     icon: Icon(
                                       Icons.delete,
                                       color: Colors.red,

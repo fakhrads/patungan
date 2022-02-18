@@ -3,7 +3,30 @@ import 'package:flutter/material.dart';
 //import Home Screen
 import './views/home/Home.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  LandingPage({Key? key}) : super(key: key);
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  bool _landingPage = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (_landingPage) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    }
+  }
+
+  void setLand() {
+    _landingPage = true;
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +66,7 @@ class LandingPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.green)),
                           onPressed: () {
+                            setLand();
                             Navigator.push(
                               context,
                               MaterialPageRoute(

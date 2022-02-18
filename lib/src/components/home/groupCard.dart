@@ -22,7 +22,7 @@ class _FeedCardState extends State<FeedCard> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DetaiLGroup(id: 1)));
+                        builder: (context) => DetailGroup(id: 1)));
               },
               child: Column(
                 children: [
