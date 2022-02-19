@@ -2,6 +2,7 @@ import 'package:path/path.dart';
 import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:patungan/src/test/model/grupTransaksi.dart';
+import 'package:patungan/src/test/model/splitBills.dart';
 import 'dart:convert';
 
 class SQLHelper {
@@ -30,6 +31,7 @@ class SQLHelper {
     final textType = 'TEXT NOT NULL';
     final boolType = 'BOOLEAN NOT NULL';
     final integerType = 'INTEGER NOT NULL';
+    final doubleType = 'REAL NOT NULL';
 
     await db.execute('''
       CREATE TABLE $tGrup ( 
@@ -47,7 +49,21 @@ class SQLHelper {
         ${PesertaTransaksiFields.nama_peserta} $textType,
         ${PesertaTransaksiFields.tgl_dibuat} $textType
       );''');
+    //id_split_bills, id_grup, id_peserta, item, harga_item,
+    //sub_total, pajak, diskon, total_harga,
+    await db.execute(''' 
+    CREATE TABLE $tSplitBills (
+        ${SplitBillsFields.id_split_bills} $idType,
+        ${SplitBillsFields.id_grup} $integerType,
+        ${SplitBillsFields.id_peserta} $integerType,
+        ${SplitBillsFields.item} $textType,
+        ${SplitBillsFields.harga_item} $doubleType,
+        ${SplitBillsFields.pajak} $doubleType,
+        ${SplitBillsFields.diskon} $doubleType
+      );''');
   }
+
+  //==========================================grup
 
   Future<GrupTransaksi> create(
       GrupTransaksi grupTransaksi, pesertaTransaksi) async {
@@ -128,6 +144,17 @@ class SQLHelper {
     );
   }
 
+  /////peserta
+  Future<int> deletePeserta(int id_peserta) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      tGrup,
+      where: '${PesertaTransaksiFields.id_peserta} = ?',
+      whereArgs: [id_peserta],
+    );
+  }
+
   Future<int> delete(int id_grup) async {
     final db = await instance.database;
 
@@ -137,6 +164,49 @@ class SQLHelper {
       whereArgs: [id_grup],
     );
   }
+
+  //==========================================end of grup
+
+  //==========================================split bills
+  Future<SplitBills> createSplitBills(
+      SplitBills splitBills, int id_grup, int id_peserta) async {
+    final db = await instance.database;
+
+    final json = splitBills.toJson();
+    final columns =
+        '${SplitBillsFields.id_grup}, ${SplitBillsFields.id_peserta}, ${SplitBillsFields.item}, ${SplitBillsFields.harga_item}, ${SplitBillsFields.pajak}, ${SplitBillsFields.diskon}';
+    final values =
+        '${json[GrupTransaksiFields.id_grup]}, ${json[PesertaTransaksiFields.id_peserta]}, ${json[SplitBillsFields.item]}, ${json[SplitBillsFields.harga_item]}, ${json[SplitBillsFields.pajak]}, ${json[SplitBillsFields.diskon]}';
+    final id_sb = await db
+        .rawInsert('INSERT INTO $tSplitBills ($columns) VALUES ($values)');
+
+    // final id_grup = await db.insert(tGrup, grupTransaksi.toJson());
+    return splitBills.copy(id_split_bills: id_sb);
+  }
+
+  Future<SplitBills> readSplitBills(int? id_split_bills) async {
+    print(id_split_bills);
+    final db = await instance.database;
+
+    final maps = await db.rawQuery(
+        'SELECT SUM(${SplitBillsFields.harga_item}) + (SUM(${SplitBillsFields.harga_item}) * (${SplitBillsFields.pajak} / 100)) - (SUM(${SplitBillsFields.harga_item}) * (${SplitBillsFields.diskon} / 100)) FROM $tSplitBills WHERE id_grup = ${SplitBillsFields.id_grup} AND id_peserta = ${SplitBillsFields.id_peserta}');
+
+    // final maps = await db.query(
+    //   tSplitBills,
+    //   columns: SplitBillsFields.values,
+    //   where: '${SplitBillsFields.id_split_bills} = ?',
+    //   whereArgs: [id_split_bills],
+    // );
+
+    if (maps.isNotEmpty) {
+      print(maps);
+      return SplitBills.fromJson(maps[0]);
+    } else {
+      throw Exception('ID Group $id_split_bills not found');
+    }
+  }
+
+  //==========================================end of split bills
 
   Future close() async {
     final db = await instance.database;
