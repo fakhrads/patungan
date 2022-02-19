@@ -56,9 +56,6 @@ class SQLHelper {
     CREATE TABLE $tSplitBills (
         ${SplitBillsFields.id_split_bills} $idType,
         ${SplitBillsFields.id_grup} $integerType,
-        ${SplitBillsFields.id_peserta} $integerType,
-        ${SplitBillsFields.item} $textType,
-        ${SplitBillsFields.harga_item} $doubleType,
         ${SplitBillsFields.pajak} $doubleType,
         ${SplitBillsFields.diskon} $doubleType
       );''');
@@ -178,14 +175,14 @@ class SQLHelper {
 
   //==========================================split bills
   Future<SplitBills> createSplitBills(
-      SplitBills splitBills, int id_grup, int id_peserta) async {
+      SplitBills splitBills, int id_grup) async {
     final db = await instance.database;
 
     final json = splitBills.toJson();
     final columns =
-        '${SplitBillsFields.id_grup}, ${SplitBillsFields.id_peserta}, ${SplitBillsFields.item}, ${SplitBillsFields.harga_item}, ${SplitBillsFields.pajak}, ${SplitBillsFields.diskon}';
+        '${SplitBillsFields.id_grup}, ${SplitBillsFields.pajak}, ${SplitBillsFields.diskon}';
     final values =
-        '${json[GrupTransaksiFields.id_grup]}, ${json[PesertaTransaksiFields.id_peserta]}, ${json[SplitBillsFields.item]}, ${json[SplitBillsFields.harga_item]}, ${json[SplitBillsFields.pajak]}, ${json[SplitBillsFields.diskon]}';
+        '${json[GrupTransaksiFields.id_grup]}, ${json[SplitBillsFields.pajak]}, ${json[SplitBillsFields.diskon]}';
     final id_sb = await db
         .rawInsert('INSERT INTO $tSplitBills ($columns) VALUES ($values)');
 

@@ -1,35 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/test/db/sqlHelper.dart';
 import 'package:patungan/src/test/model/pesertaTransaksi.dart';
+import 'package:patungan/src/test/model/splitBills.dart';
 import 'package:patungan/src/views/match_splitbills/matchSplitBills.dart';
 import 'package:intl/intl.dart';
 import 'package:select_form_field/select_form_field.dart';
 
-final List<Map<String, dynamic>> _items = [
-  {
-    'value': 'boxValue',
-    'label': 'Box Label',
-    'icon': Icon(Icons.stop),
-  },
-  {
-    'value': 'circleValue',
-    'label': 'Circle Label',
-    'icon': Icon(Icons.fiber_manual_record),
-    'textStyle': TextStyle(color: Colors.red),
-  },
-  {
-    'value': 'starValue',
-    'label': 'Star Label',
-    'enable': false,
-    'icon': Icon(Icons.grade),
-  },
-];
-
 class FormSplitBills extends StatefulWidget {
+  final SplitBills? splitBills;
   final id;
   final namagrup;
   final deskripsi;
-  FormSplitBills({Key? key, this.id, this.namagrup, this.deskripsi})
+  FormSplitBills(
+      {Key? key, this.splitBills, this.id, this.namagrup, this.deskripsi})
       : super(key: key);
 
   @override
@@ -184,18 +167,6 @@ class _FormSplitBillsState extends State<FormSplitBills> {
                               ),
                             ],
                           ),
-                          Expanded(
-                              flex: 1,
-                              child: ListView.builder(
-                                  itemCount: _counter,
-                                  itemBuilder: (BuildContext ctxt, int index) {
-                                    return TextField(
-                                      onChanged: (val) {},
-                                      decoration: InputDecoration(
-                                        hintText: 'Masukkan deskripsi',
-                                      ),
-                                    );
-                                  })),
                         ]))),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
