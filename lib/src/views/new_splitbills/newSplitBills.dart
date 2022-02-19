@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/components/new_splitbills/formSplitBills.dart';
+import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 
 class NewSplitBills extends StatelessWidget {
   final int? idgrup;
   final String? namagrup;
   final String? deskripsi;
+  final peserta;
 
-  const NewSplitBills({Key? key, this.idgrup, this.namagrup, this.deskripsi})
+  NewSplitBills(
+      {Key? key, this.peserta, this.idgrup, this.namagrup, this.deskripsi})
       : super(key: key);
 
   @override
@@ -15,7 +18,15 @@ class NewSplitBills extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFFD0D4D7),
         body: Column(
-          children: [HeaderDetail(), FormSplitBills()],
+          children: [
+            HeaderDetail(),
+            SingleChildScrollView(
+                child: FormSplitBills(
+              id: idgrup,
+              namagrup: namagrup,
+              deskripsi: deskripsi,
+            ))
+          ],
         ));
   }
 }

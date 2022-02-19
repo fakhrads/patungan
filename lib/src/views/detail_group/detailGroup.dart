@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patungan/src/components/detail_group/detailGroup.dart';
 import 'package:patungan/src/components/detail_group/listSplitBills.dart';
+import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 import 'package:patungan/src/views/new_splitbills/newSplitBills.dart';
 import 'package:patungan/src/test/db/sqlHelper.dart';
 import 'package:patungan/src/test/model/grupTransaksi.dart';
@@ -17,6 +18,7 @@ class DetailGroup extends StatefulWidget {
 }
 
 class _DetailGroupState extends State<DetailGroup> {
+  late List<PesertaTransaksi> tPes = [];
   var gTransaksi;
   bool isLoading = false;
 
@@ -39,6 +41,7 @@ class _DetailGroupState extends State<DetailGroup> {
     setState(() => isLoading = true);
 
     this.gTransaksi = await SQLHelper.instance.readGrupTransaksi(widget.id);
+    this.tPes = await SQLHelper.instance.readPesertaTransaksi(widget.id);
 
     setState(() => isLoading = false);
   }
@@ -54,9 +57,11 @@ class _DetailGroupState extends State<DetailGroup> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => NewSplitBills(
-                      idgrup: widget.id,
-                      namagrup: widget.nama_grup,
-                      deskripsi: widget.deskripsi),
+                    idgrup: widget.id,
+                    namagrup: widget.nama_grup,
+                    deskripsi: widget.deskripsi,
+                    peserta: tPes,
+                  ),
                 ));
           },
           child: Icon(Icons.add),

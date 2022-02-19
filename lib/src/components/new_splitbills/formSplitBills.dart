@@ -1,10 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/test/db/sqlHelper.dart';
+import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 import 'package:patungan/src/views/match_splitbills/matchSplitBills.dart';
+import 'package:intl/intl.dart';
+import 'package:select_form_field/select_form_field.dart';
+
+final List<Map<String, dynamic>> _items = [
+  {
+    'value': 'boxValue',
+    'label': 'Box Label',
+    'icon': Icon(Icons.stop),
+  },
+  {
+    'value': 'circleValue',
+    'label': 'Circle Label',
+    'icon': Icon(Icons.fiber_manual_record),
+    'textStyle': TextStyle(color: Colors.red),
+  },
+  {
+    'value': 'starValue',
+    'label': 'Star Label',
+    'enable': false,
+    'icon': Icon(Icons.grade),
+  },
+];
 
 class FormSplitBills extends StatefulWidget {
-  final int? id;
-  String? namagrup;
-  String? deskripsi;
+  final id;
+  final namagrup;
+  final deskripsi;
   FormSplitBills({Key? key, this.id, this.namagrup, this.deskripsi})
       : super(key: key);
 
@@ -13,18 +37,62 @@ class FormSplitBills extends StatefulWidget {
 }
 
 class _FormSplitBillsState extends State<FormSplitBills> {
+  late List<PesertaTransaksi> tPes = [];
+  var gTransaksi;
+  final _DataItem = GlobalKey<FormState>();
+  bool isLoading = false;
+  int _counter = 1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshNotes();
+    debugPrint("HEHE");
+  }
+
+  @override
+  void dispose() {
+    SQLHelper.instance.close();
+
+    super.dispose();
+  }
+
+  Future refreshNotes() async {
+    setState(() => isLoading = true);
+
+    this.tPes = await SQLHelper.instance.readPesertaTransaksi(widget.id);
+
+    setState(() => isLoading = false);
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decrementCounter() {
+    if (_counter == 1) {
+    } else {
+      setState(() {
+        _counter--;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final na = widget.namagrup;
     return Container(
-      width: MediaQuery.of(context).size.width - 20,
-      height: MediaQuery.of(context).size.height * 0.85,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(25))),
-      child: Padding(
+        width: MediaQuery.of(context).size.width - 20,
+        height: MediaQuery.of(context).size.height * 0.85,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+        child: Padding(
           padding: EdgeInsets.all(12),
-          child: Column(children: [
+          child: SingleChildScrollView(
+              child: Column(children: [
             Container(
                 width: MediaQuery.of(context).size.width - 30,
                 decoration: BoxDecoration(
@@ -39,14 +107,19 @@ class _FormSplitBillsState extends State<FormSplitBills> {
                           children: [
                             Text("Group Name: ",
                                 style: TextStyle(fontSize: 16)),
-                            Text("Tim Tim an", style: TextStyle(fontSize: 16))
+                            Text(widget.namagrup,
+                                style: TextStyle(fontSize: 16))
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Date", style: TextStyle(fontSize: 16)),
-                            Text("01/01/2022", style: TextStyle(fontSize: 16))
+                            Text(
+                                DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now())
+                                    .toString(),
+                                style: TextStyle(fontSize: 16))
                           ],
                         )
                       ],
@@ -68,7 +141,8 @@ class _FormSplitBillsState extends State<FormSplitBills> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Note: ", style: TextStyle(fontSize: 16)),
-                            Text("Tim Nganjuk", style: TextStyle(fontSize: 16))
+                            Text(widget.deskripsi,
+                                style: TextStyle(fontSize: 16))
                           ],
                         )
                       ],
@@ -78,60 +152,51 @@ class _FormSplitBillsState extends State<FormSplitBills> {
             ),
             Padding(
                 padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-                child: Column(children: [
-                  Text(
-                    "Item",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "masukan nama makanan",
-                    ),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "masukan harga makanan",
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 280, top: 10),
-                    child: TextButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.add_circle_sharp,
-                          color: Color(0xFF2255DC),
-                          size: 50,
-                        )),
-                  ),
-                ])),
-            Divider(
-              color: Colors.white,
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width - 30,
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Padding(
-                    padding: EdgeInsets.all(18),
+                child: Form(
+                    key: _DataItem,
                     child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text("Name : ", style: TextStyle(fontSize: 16)),
-                            Text("Tim Nganjuk", style: TextStyle(fontSize: 16))
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 5)),
-                        Row(
-                          children: [
-                            Text("Price : ", style: TextStyle(fontSize: 16)),
-                            Text("Rp. xxxxx", style: TextStyle(fontSize: 16))
-                          ],
-                        )
-                      ],
-                    ))),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                // optional flex property if flex is 1 because the default flex is 1
+                                flex: 1,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      labelText: 'Jumlah Pajak',
+                                      labelStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
+                              ),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                // optional flex property if flex is 1 because the default flex is 1
+                                flex: 1,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      labelText: 'Diskon',
+                                      labelStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: ListView.builder(
+                                  itemCount: _counter,
+                                  itemBuilder: (BuildContext ctxt, int index) {
+                                    return TextField(
+                                      onChanged: (val) {},
+                                      decoration: InputDecoration(
+                                        hintText: 'Masukkan deskripsi',
+                                      ),
+                                    );
+                                  })),
+                        ]))),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -160,6 +225,40 @@ class _FormSplitBillsState extends State<FormSplitBills> {
               ],
             )
           ])),
-    );
+        ));
+  }
+}
+
+class FormSplit extends StatelessWidget {
+  const FormSplit({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Expanded(
+            // optional flex property if flex is 1 because the default flex is 1
+            flex: 1,
+            child: TextField(
+              decoration: InputDecoration(
+                  labelText: 'Nama Item',
+                  labelStyle: TextStyle(color: Colors.grey[400])),
+            ),
+          ),
+          SizedBox(width: 10.0),
+          Expanded(
+            // optional flex property if flex is 1 because the default flex is 1
+            flex: 1,
+            child: TextField(
+              decoration: InputDecoration(
+                  labelText: 'Harga',
+                  labelStyle: TextStyle(color: Colors.grey[400])),
+            ),
+          ),
+        ],
+      )
+    ]);
   }
 }
