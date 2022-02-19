@@ -5,7 +5,14 @@ import 'package:patungan/src/components/edit_group/editGroup.dart';
 
 class EditDetailGroup extends StatelessWidget {
   final id_grup;
-  const EditDetailGroup({Key? key, this.id_grup}) : super(key: key);
+  final nama_grup;
+  final catatan;
+  const EditDetailGroup({
+    Key? key,
+    this.id_grup,
+    this.nama_grup,
+    this.catatan,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +25,8 @@ class EditDetailGroup extends StatelessWidget {
                 HeaderEditDetail(),
                 editGroup(
                   id_grup: id_grup,
+                  nama_grup: nama_grup,
+                  catatan: catatan,
                 )
               ],
             )));

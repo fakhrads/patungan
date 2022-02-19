@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:patungan/src/test/db/sqlHelper.dart';
+import 'package:patungan/src/test/widget/group_form_widget.dart';
+import 'package:patungan/src/test/model/grupTransaksi.dart';
 
 class editGroup extends StatelessWidget {
   final id_grup;
-  const editGroup({Key? key, this.id_grup}) : super(key: key);
+  final nama_grup;
+  final catatan;
+  // final GrupTransaksi? grupTransaksi;
+  const editGroup({
+    Key? key,
+    // this.grupTransaksi,
+    this.id_grup,
+    this.nama_grup,
+    this.catatan,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +33,7 @@ class editGroup extends StatelessWidget {
                   children: [
                     Text("Nama Grup"),
                     TextField(
-                      decoration:
-                          InputDecoration(hintText: 'Tim Nganjuk $id_grup'),
-                    ),
+                        decoration: InputDecoration(hintText: '$nama_grup')),
                     Divider(
                       color: Color(0xFFFFFFFF),
                     ),
@@ -31,7 +41,7 @@ class editGroup extends StatelessWidget {
                     TextField(
                       cursorHeight: 20,
                       decoration: InputDecoration(
-                        hintText: 'Masukkan deskripsi',
+                        hintText: '$catatan',
                       ),
                     ),
                     Divider(

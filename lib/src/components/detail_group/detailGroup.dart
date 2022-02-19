@@ -76,6 +76,8 @@ class _DetailGroupContainerState extends State<DetailGroupContainer> {
                                 MaterialPageRoute(
                                     builder: (context) => EditDetailGroup(
                                           id_grup: widget.id,
+                                          nama_grup: widget.nama_grup,
+                                          catatan: widget.deskripsi_grup,
                                         )));
                           },
                           child: Icon(
