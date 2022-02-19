@@ -3,6 +3,7 @@ import 'package:patungan/src/test/model/pesertaTransaksi.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:patungan/src/test/model/grupTransaksi.dart';
 import 'package:patungan/src/test/model/splitBills.dart';
+import 'package:patungan/src/test/model/tampungItems.dart';
 import 'dart:convert';
 
 class SQLHelper {
@@ -60,6 +61,14 @@ class SQLHelper {
         ${SplitBillsFields.harga_item} $doubleType,
         ${SplitBillsFields.pajak} $doubleType,
         ${SplitBillsFields.diskon} $doubleType
+      );''');
+    await db.execute(''' 
+    CREATE TABLE $tItems (
+        ${ItemsFields.id_item} $idType,
+        ${ItemsFields.id_grup} $integerType,
+        ${ItemsFields.nama_item} $textType,
+        ${ItemsFields.harga_item} $doubleType,
+        ${ItemsFields.jumlah_item} $integerType
       );''');
   }
 

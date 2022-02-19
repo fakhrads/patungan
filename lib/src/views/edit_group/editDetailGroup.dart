@@ -7,33 +7,14 @@ class EditDetailGroup extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> _values = [];
   final id_grup;
-  EditDetailGroup({Key? key, this.id_grup}) : super(key: key);
-
-  _onUpdate(int index, String val) async {
-    int foundKey = -1;
-    for (var map in _values) {
-      if (map.containsKey("id")) {
-        if (map["id"] == index) {
-          foundKey = index;
-          break;
-        }
-      }
-    }
-    if (-1 != foundKey) {
-      _values.removeWhere((map) {
-        return map["id"] == foundKey;
-      });
-    }
-    Map<String, dynamic> json = {
-      "id": index,
-      "value": val,
-      "createdTime": DateTime.now(),
-    };
-    _values.add(json);
-    for (Map m in _values) {
-      print(m["value"]);
-    }
-  }
+  final nama_grup;
+  final catatan;
+  EditDetailGroup({
+    Key? key,
+    this.id_grup,
+    this.nama_grup,
+    this.catatan,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +28,8 @@ class EditDetailGroup extends StatelessWidget {
                 HeaderEditDetail(),
                 editGroup(
                   id_grup: id_grup,
+                  nama_grup: nama_grup,
+                  catatan: catatan,
                 )
               ],
             )));
